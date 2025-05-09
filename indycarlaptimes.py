@@ -3,8 +3,9 @@ from PyPDF2 import PdfReader
 import csv
 import os
 
-# Path to the PDF file
-pdf_path = "~/Desktop/indycar-sectionresults-race.pdf"
+# Path to the PDF file - use expanduser to handle the tilde
+pdf_path = os.path.expanduser("~/demos/indycar/indycar-sectionresults-race.pdf")
+
 
 # Check if the PDF exists
 if not os.path.exists(pdf_path):
@@ -15,7 +16,90 @@ reader = PdfReader(pdf_path)
 print(f"PDF loaded successfully with {len(reader.pages)} pages")
 
 # Function to extract lap times for a given driver (with better boundaries)
+# ...existing code...
+
 def extract_driver_lap_times(reader, car_number, driver_name):
+    lap_data = {}  # Use dictionary to handle duplicate lap numbers
+    capture = False
+    section_count = 0
+    current_section = None
+
+    possible_identifiers = [
+        f"Section Data for Car {car_number} - {driver_name}",
+        f"Car {car_number} - {driver_name}",
+        f"{car_number} - {driver_name}"
+    ]
+
+    print(f"Looking for data for Car {car_number} - {driver_name}")
+
+    for page_num, page in enumerate(reader.pages):
+        text = page.extract_text()
+        if not text:
+            continue
+
+        # Check for a new section starting
+        if any(pid in text for pid in possible_identifiers):
+            # If we find a new section identifier, check if it's a different section
+            for line in text.split('\n'):
+                if any(pid in line for pid in possible_identifiers):
+                    # Found the section header line
+                    if line != current_section:
+                        # This is a new section, start fresh
+                        if capture:
+                            print(f"Found new section for {driver_name}, ending previous section")
+                            section_count += 1
+                        current_section = line
+                        print(f"Found {driver_name} section on page {page_num + 1}: {current_section}")
+                        capture = True
+                        break
+
+        if capture:
+            lines = text.split('\n')
+
+            for line in lines:
+                line = line.strip()
+
+                # Improved regex to specifically match the lap time pattern
+                # This looks for lap number followed by T, then captures all numbers in the line
+                lap_match = re.match(r'^(\d+)T\s+(.*)', line)
+                if lap_match:
+                    lap = int(lap_match.group(1))
+                    
+                    # Extract all floating point numbers from the line
+                    numbers = re.findall(r'\d+\.\d+', lap_match.group(2))
+                    
+                    if numbers:
+                        # In IndyCar timing sheets, the lap time is typically in a consistent position
+                        # Let's try to identify it more precisely based on position/patterns
+                        
+                        # First, check for a common IndyCar lap time pattern (typically last number unless PI to PO exists)
+                        time = None
+                        
+                        # If we have exactly 3 numbers, they're likely [sector1, sector2, lap_time]
+                        if len(numbers) == 3:
+                            time = float(numbers[2])  # Total lap time is the 3rd number
+                        # If we have exactly 4 numbers, they might be [sector1, sector2, lap_time, pi_to_po]
+                        elif len(numbers) == 4:
+                            time = float(numbers[2])  # Total lap time is still the 3rd number
+                        # If we have more or fewer numbers, just use the last number before any potential "PI to PO"
+                        elif len(numbers) > 0:
+                            # Take either the 3rd number if it exists, otherwise the last one
+                            index = min(2, len(numbers)-1)
+                            time = float(numbers[index])
+                        
+                        # Filter out obviously invalid times (< 20 or > 150 seconds)
+                        if time and 20.0 <= time <= 150.0:
+                            # Only keep the first occurrence of each lap number
+                            if lap not in lap_data:
+                                lap_data[lap] = (car_number, driver_name, lap, time)
+                                print(f"Added lap {lap}: {time} seconds")
+                        elif time:
+                            print(f"Skipping suspicious lap time: Lap {lap}, Time {time}")
+                    else:
+                        print(f"No valid numbers found in line: {line}")
+
+        # Stop capturing if a section for a different driver starts
+    
     lap_data = {}  # Use dictionary to handle duplicate lap numbers
     capture = False
     section_count = 0
@@ -97,7 +181,8 @@ palou_lap_times = extract_driver_lap_times(reader, "10", "Palou, Alex")
 all_lap_times = oward_lap_times + rossi_lap_times + palou_lap_times
 
 # Save to CSV
-csv_path_full = "~/Desktop/indycar-lap-times.csv"
+
+csv_path_full = os.path.expanduser("~/demos/indycar/indycar-lap-times.csv")
 if all_lap_times:
     with open(csv_path_full, mode="w", newline="") as file:
         writer = csv.writer(file)
