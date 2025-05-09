@@ -1,7 +1,7 @@
 # IndyCar Python Project
 
 ## Description
-A Python-based data analysis tool for IndyCar racing statistics and performance metrics.
+A Python-based data analysis tool for IndyCar racing statistics and performance metrics. Indycar releases race timing data in PDF format, that can be challenging to parse. This code parses it. This example is from the 2023 GMR Grand Prix, but it should work for any race.
 
 ## Installation
 
