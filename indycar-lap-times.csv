@@ -1,5 +1,5 @@
 Car,Driver,Lap,T (Time)
-5,"O'Ward, Pato",1,107.5736
+5,"O'Ward, Pato",1,75.8128
 5,"O'Ward, Pato",2,81.21
 5,"O'Ward, Pato",3,125.1586
 5,"O'Ward, Pato",4,137.6053
@@ -20,7 +20,7 @@ Car,Driver,Lap,T (Time)
 5,"O'Ward, Pato",19,72.3646
 5,"O'Ward, Pato",20,72.4764
 5,"O'Ward, Pato",21,72.2322
-5,"O'Ward, Pato",22,41.6611
+5,"O'Ward, Pato",22,68.928
 5,"O'Ward, Pato",23,71.9403
 5,"O'Ward, Pato",24,73.0103
 5,"O'Ward, Pato",25,72.709
@@ -37,7 +37,7 @@ Car,Driver,Lap,T (Time)
 5,"O'Ward, Pato",36,73.7296
 5,"O'Ward, Pato",37,73.6669
 5,"O'Ward, Pato",38,74.2207
-5,"O'Ward, Pato",39,40.6072
+5,"O'Ward, Pato",39,70.343
 5,"O'Ward, Pato",40,72.1873
 5,"O'Ward, Pato",41,72.8302
 5,"O'Ward, Pato",42,73.0493
@@ -60,7 +60,7 @@ Car,Driver,Lap,T (Time)
 5,"O'Ward, Pato",59,72.4382
 5,"O'Ward, Pato",60,72.4148
 5,"O'Ward, Pato",61,72.5382
-5,"O'Ward, Pato",62,42.0156
+5,"O'Ward, Pato",62,68.6044
 5,"O'Ward, Pato",63,72.3538
 5,"O'Ward, Pato",64,73.2022
 5,"O'Ward, Pato",65,73.4498
@@ -84,7 +84,7 @@ Car,Driver,Lap,T (Time)
 5,"O'Ward, Pato",83,73.6487
 5,"O'Ward, Pato",84,74.5118
 5,"O'Ward, Pato",85,74.8518
-7,"Rossi, Alexander",1,106.3812
+7,"Rossi, Alexander",1,75.1694
 7,"Rossi, Alexander",2,79.5857
 7,"Rossi, Alexander",3,125.2446
 7,"Rossi, Alexander",4,134.2074
@@ -101,7 +101,7 @@ Car,Driver,Lap,T (Time)
 7,"Rossi, Alexander",15,72.7804
 7,"Rossi, Alexander",16,72.7807
 7,"Rossi, Alexander",17,73.0351
-7,"Rossi, Alexander",18,41.117
+7,"Rossi, Alexander",18,69.7198
 7,"Rossi, Alexander",19,71.2568
 7,"Rossi, Alexander",20,72.7429
 7,"Rossi, Alexander",21,72.524
@@ -124,7 +124,7 @@ Car,Driver,Lap,T (Time)
 7,"Rossi, Alexander",38,73.6312
 7,"Rossi, Alexander",39,73.5888
 7,"Rossi, Alexander",40,73.7669
-7,"Rossi, Alexander",41,41.9848
+7,"Rossi, Alexander",41,69.8591
 7,"Rossi, Alexander",42,71.3583
 7,"Rossi, Alexander",43,73.09
 7,"Rossi, Alexander",44,72.945
@@ -148,7 +148,7 @@ Car,Driver,Lap,T (Time)
 7,"Rossi, Alexander",62,73.2026
 7,"Rossi, Alexander",63,73.0296
 7,"Rossi, Alexander",64,73.214
-7,"Rossi, Alexander",65,42.3185
+7,"Rossi, Alexander",65,69.3392
 7,"Rossi, Alexander",66,71.4771
 7,"Rossi, Alexander",67,72.4667
 7,"Rossi, Alexander",68,72.5252
@@ -169,7 +169,7 @@ Car,Driver,Lap,T (Time)
 7,"Rossi, Alexander",83,73.4024
 7,"Rossi, Alexander",84,73.7155
 7,"Rossi, Alexander",85,74.556
-10,"Palou, Alex",1,108.8156
+10,"Palou, Alex",1,73.626
 10,"Palou, Alex",2,78.5285
 10,"Palou, Alex",3,125.4021
 10,"Palou, Alex",4,134.7665
@@ -186,7 +186,7 @@ Car,Driver,Lap,T (Time)
 10,"Palou, Alex",15,72.7935
 10,"Palou, Alex",16,72.934
 10,"Palou, Alex",17,73.3475
-10,"Palou, Alex",18,41.7906
+10,"Palou, Alex",18,70.1551
 10,"Palou, Alex",19,70.9694
 10,"Palou, Alex",20,72.4641
 10,"Palou, Alex",21,72.4936
@@ -211,7 +211,7 @@ Car,Driver,Lap,T (Time)
 10,"Palou, Alex",40,73.7115
 10,"Palou, Alex",41,73.9747
 10,"Palou, Alex",42,73.1483
-10,"Palou, Alex",43,42.6441
+10,"Palou, Alex",43,69.6363
 10,"Palou, Alex",44,72.0157
 10,"Palou, Alex",45,73.1215
 10,"Palou, Alex",46,73.1783
@@ -228,7 +228,7 @@ Car,Driver,Lap,T (Time)
 10,"Palou, Alex",57,72.8759
 10,"Palou, Alex",58,72.9944
 10,"Palou, Alex",59,72.9426
-10,"Palou, Alex",60,40.9769
+10,"Palou, Alex",60,69.4442
 10,"Palou, Alex",61,70.4097
 10,"Palou, Alex",62,72.2587
 10,"Palou, Alex",63,72.3973
