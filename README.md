@@ -7,7 +7,7 @@ A Python-based data analysis tool for IndyCar racing statistics and performance 
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/indycar.git
+git clone https://github.com/jdanton/indycar.git
 
 # Navigate to the project directory
 cd indycar
