@@ -14,6 +14,40 @@ if not os.path.exists(pdf_path):
 reader = PdfReader(pdf_path)
 print(f"PDF loaded successfully with {len(reader.pages)} pages")
 
+def find_all_drivers(reader):
+    """
+    Scan through the PDF to find all drivers and their car numbers
+    Returns a list of tuples: (car_number, driver_name)
+    """
+    drivers = {}  # Using dict to eliminate duplicates
+    
+    # Look for section headers like "Section Data for Car X - Driver Name"
+    section_header_pattern = r"Section Data for Car (\d+) - ([^,]+),\s*([^,]+)"
+    
+    for page_num in range(len(reader.pages)):
+        text = reader.pages[page_num].extract_text()
+        if not text:
+            continue
+            
+        # Check if this page has driver information
+        matches = re.findall(section_header_pattern, text)
+        for match in matches:
+            car_number = match[0]
+            last_name = match[1].strip()
+            first_name = match[2].strip()
+            driver_name = f"{last_name}, {first_name}"
+            
+            # Add to our drivers dictionary
+            drivers[car_number] = driver_name
+    
+    # Convert dict to list of tuples
+    driver_list = [(car, name) for car, name in drivers.items()]
+    
+    # Sort by car number
+    driver_list.sort(key=lambda x: int(x[0]))
+    
+    return driver_list
+
 def extract_driver_lap_times(reader, car_number, driver_name):
     """
     Extract lap times for a specific driver based on the observed pattern:
@@ -35,7 +69,6 @@ def extract_driver_lap_times(reader, car_number, driver_name):
             
         # Check if this page contains data for our driver
         if driver_name in text or f"Car {car_number}" in text:
-            print(f"Found potential data on page {page_num+1}")
             found_sections.append(page_num)
             
             lines = text.split('\n')
@@ -54,7 +87,9 @@ def extract_driver_lap_times(reader, car_number, driver_name):
                         # Validate the lap time (seems to be around 70 seconds for this track)
                         if 65.0 <= lap_time <= 80.0:
                             lap_data[current_lap] = (car_number, driver_name, current_lap, lap_time)
-                            print(f"Added lap {current_lap}: {lap_time} seconds")
+                            # Reduce verbosity - only print every 10th lap
+                            if current_lap % 10 == 0:
+                                print(f"Added lap {current_lap}: {lap_time} seconds")
                             
                             # Reset current lap
                             current_lap = None
@@ -69,17 +104,25 @@ def extract_driver_lap_times(reader, car_number, driver_name):
                         except ValueError:
                             current_lap = None
     
-    print(f"Found {len(lap_data)} unique lap times for {driver_name} across {len(found_sections)} sections")
+    print(f"Found {len(lap_data)} unique lap times for {driver_name} (Car {car_number}) across {len(found_sections)} sections")
     return list(lap_data.values())
 
-# Extract lap times for all three drivers
-oward_lap_times = extract_driver_lap_times(reader, "5", "O'Ward, Pato")
-rossi_lap_times = extract_driver_lap_times(reader, "20", "Rossi, Alexander")
-palou_lap_times = extract_driver_lap_times(reader, "10", "Palou, Alex")
-lungaard_lap_times = extract_driver_lap_times(reader, "7", "Lundgaard, Christian")
+# Find all drivers in the PDF
+print("Scanning PDF for all drivers...")
+all_drivers = find_all_drivers(reader)
+print(f"Found {len(all_drivers)} drivers in the PDF:")
+for car, driver in all_drivers:
+    print(f"  Car #{car}: {driver}")
 
-# Combine all lap times
-all_lap_times = oward_lap_times + rossi_lap_times + palou_lap_times + lungaard_lap_times
+# Extract lap times for all drivers
+driver_lap_times = {}
+all_lap_times = []
+
+for car_number, driver_name in all_drivers:
+    # Extract lap times for this driver
+    laps = extract_driver_lap_times(reader, car_number, driver_name)
+    driver_lap_times[driver_name] = laps
+    all_lap_times.extend(laps)
 
 # Save to CSV
 csv_path_full = os.path.expanduser("~/demos/indycar/indycar-lap-times.csv")
@@ -89,7 +132,11 @@ if all_lap_times:
         writer.writerow(["Car", "Driver", "Lap", "T (Time)"])
         writer.writerows(all_lap_times)
 
-    print(f"✅ Saved {len(all_lap_times)} lap times to {csv_path_full}")
-    print(f"O'Ward: {len(oward_lap_times)} laps, Rossi: {len(rossi_lap_times)} laps, Palou: {len(palou_lap_times)} laps, Lungaard: {len(lungaard_lap_times)} laps")
+    print(f"\n✅ Saved {len(all_lap_times)} lap times to {csv_path_full}")
+    
+    # Print summary of lap times by driver
+    print("\nLap counts by driver:")
+    for driver, laps in driver_lap_times.items():
+        print(f"  {driver}: {len(laps)} laps")
 else:
     print("⚠️ No lap times found. Check the PDF format and ensure the driver names match exactly.")
