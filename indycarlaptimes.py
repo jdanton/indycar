@@ -50,11 +50,7 @@ def find_all_drivers(reader):
 
 def extract_driver_lap_times(reader, car_number, driver_name):
     """
-    Extract lap times for a specific driver based on the observed pattern:
-    - Lap number on one line
-    - "T" on next line
-    - Several sector times
-    - Full lap time right before a line with just "S"
+    Extract lap times for a specific driver based on the observed pattern
     """
     lap_data = {}
     found_sections = []
@@ -67,8 +63,9 @@ def extract_driver_lap_times(reader, car_number, driver_name):
         if not text:
             continue
             
-        # Check if this page contains data for our driver
-        if driver_name in text or f"Car {car_number}" in text:
+        # Make the driver detection much more specific
+        section_header = f"Section Data for Car {car_number} - {driver_name}"
+        if section_header in text:
             found_sections.append(page_num)
             
             lines = text.split('\n')
@@ -77,6 +74,7 @@ def extract_driver_lap_times(reader, car_number, driver_name):
             current_lap = None
             
             for i in range(len(lines)-1):
+                # Rest of the code remains the same
                 # Check if current line is just "S" - the full lap time would be right before
                 if lines[i].strip() == "S" and i > 0:
                     # Try to get lap time from previous line
@@ -85,7 +83,7 @@ def extract_driver_lap_times(reader, car_number, driver_name):
                         lap_time = float(lap_time_match.group(1))
                         
                         # Validate the lap time (seems to be around 70 seconds for this track)
-                        if 65.0 <= lap_time <= 80.0:
+                        if 55.0 <= lap_time <= 140.0:
                             lap_data[current_lap] = (car_number, driver_name, current_lap, lap_time)
                             # Reduce verbosity - only print every 10th lap
                             if current_lap % 10 == 0:
